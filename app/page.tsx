@@ -10,8 +10,7 @@ export default function Home() {
   useEffect(() => {
     if (gameState !== "playing") return;
 
-    const canvas = canvasRef.current;
-    if (!canvas) return;
+    const canvas = canvasRef.current!;
     const ctx = canvas.getContext("2d");
     if (!ctx) return;
 
@@ -38,7 +37,6 @@ export default function Home() {
     let paddleX = (canvas.width - paddleWidth) / 2;
 
     function movePaddle(clientX: number) {
-      if(!canvas) return;
 
       const rect = canvas.getBoundingClientRect();
       const posX = clientX - rect.left;
