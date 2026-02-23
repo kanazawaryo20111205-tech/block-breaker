@@ -10,7 +10,8 @@ export default function Home() {
   useEffect(() => {
     if (gameState !== "playing") return;
 
-    const canvas = canvasRef.current!;
+    const canvas = canvasRef.current;
+    if (!canvas) return;
     const ctx = canvas.getContext("2d");
     if (!ctx) return;
 
@@ -38,7 +39,7 @@ export default function Home() {
 
     function movePaddle(clientX: number) {
 
-      const rect = canvas.getBoundingClientRect();
+      const rect = canvas!.getBoundingClientRect();
       const posX = clientX - rect.left;
 
       if (lastX !== 0) {
@@ -49,8 +50,8 @@ export default function Home() {
       paddleX = posX - paddleWidth / 2;
 
       if (paddleX < 0) paddleX = 0;
-      if (paddleX + paddleWidth > canvas.width)
-        paddleX = canvas.width - paddleWidth;
+      if (paddleX + paddleWidth > canvas!.width)
+        paddleX = canvas!.width - paddleWidth;
     }
 
     // PC
@@ -103,11 +104,11 @@ export default function Home() {
             blocks[c][r].x = blockX;
             blocks[c][r].y = blockY;
 
-            ctx.beginPath();
-            ctx.rect(blockX, blockY, blockWidth, blockHeight);
-            ctx.fillStyle = "white";
-            ctx.fill();
-            ctx.closePath();
+            ctx!.beginPath();
+            ctx!.rect(blockX, blockY, blockWidth, blockHeight);
+            ctx!.fillStyle = "white";
+            ctx!.fill();
+            ctx!.closePath();
           }
         }
       }
@@ -151,40 +152,40 @@ export default function Home() {
     }
 
     function draw() {
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      ctx!.clearRect(0, 0, canvas!.width, canvas!.height);
 
       drawBlocks();
 
       // ボール
-      ctx.beginPath();
-      ctx.arc(x, y, radius, 0, Math.PI * 2);
-      ctx.fillStyle = "cyan";
-      ctx.fill();
-      ctx.closePath();
+      ctx!.beginPath();
+      ctx!.arc(x, y, radius, 0, Math.PI * 2);
+      ctx!.fillStyle = "cyan";
+      ctx!.fill();
+      ctx!.closePath();
 
       // パドル
-      ctx.beginPath();
-      ctx.rect(
+      ctx!.beginPath();
+      ctx!.rect(
         paddleX,
-        canvas.height - paddleHeight - 10,
+        canvas!.height - paddleHeight - 10,
         paddleWidth,
         paddleHeight
       );
-      ctx.fillStyle = "white";
-      ctx.fill();
-      ctx.closePath();
+      ctx!.fillStyle = "white";
+      ctx!.fill();
+      ctx!.closePath();
 
       const isClear = collisionDetection();
       if (isClear) return;
 
-      if (x + dx > canvas.width - radius || x + dx < radius)
+      if (x + dx > canvas!.width - radius || x + dx < radius)
         dx = -dx;
 
       if (y + dy < radius)
         dy = -dy;
 
       if (
-        y + dy > canvas.height - paddleHeight - 18 &&
+        y + dy > canvas!.height - paddleHeight - 18 &&
         x > paddleX &&
         x < paddleX + paddleWidth
       ) {
@@ -197,7 +198,7 @@ export default function Home() {
         dy = -speed * Math.cos(angle);
       }
 
-      if (y + dy > canvas.height - radius) {
+      if (y + dy > canvas!.height - radius) {
         setGameState("gameover");
         return;
       }
