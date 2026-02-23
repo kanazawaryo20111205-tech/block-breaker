@@ -38,6 +38,8 @@ export default function Home() {
     let paddleX = (canvas.width - paddleWidth) / 2;
 
     function movePaddle(clientX: number) {
+      if(!canvas) return;
+
       const rect = canvas.getBoundingClientRect();
       const posX = clientX - rect.left;
 
